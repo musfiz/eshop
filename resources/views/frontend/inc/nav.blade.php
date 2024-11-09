@@ -1,22 +1,23 @@
     <!-- Top Bar Banner -->
     @php
-        $topbar_banner = get_setting('topbar_banner');
-        $topbar_banner_medium = get_setting('topbar_banner_medium');
-        $topbar_banner_small = get_setting('topbar_banner_small');
+        $topbar_banner = get_setting("topbar_banner");
+        $topbar_banner_medium = get_setting("topbar_banner_medium");
+        $topbar_banner_small = get_setting("topbar_banner_small");
         $topbar_banner_asset = uploaded_asset($topbar_banner);
     @endphp
     @if ($topbar_banner != null)
         <div class="position-relative top-banner removable-session z-1035 d-none" data-key="top-banner"
             data-value="removed">
-            <a href="{{ get_setting('topbar_banner_link') }}" class="d-block text-reset h-40px h-lg-60px">
+            <a href="{{ get_setting("topbar_banner_link") }}" class="d-block text-reset h-40px h-lg-60px">
                 <!-- For Large device -->
-                <img src="{{ $topbar_banner_asset }}" class="d-none d-xl-block img-fit h-100" alt="{{ translate('topbar_banner') }}">
+                <img src="{{ $topbar_banner_asset }}" class="d-none d-xl-block img-fit h-100"
+                    alt="{{ translate("topbar_banner") }}">
                 <!-- For Medium device -->
                 <img src="{{ $topbar_banner_medium != null ? uploaded_asset($topbar_banner_medium) : $topbar_banner_asset }}"
-                    class="d-none d-md-block d-xl-none img-fit h-100" alt="{{ translate('topbar_banner') }}"> 
+                    class="d-none d-md-block d-xl-none img-fit h-100" alt="{{ translate("topbar_banner") }}">
                 <!-- For Small device -->
                 <img src="{{ $topbar_banner_small != null ? uploaded_asset($topbar_banner_small) : $topbar_banner_asset }}"
-                    class="d-md-none img-fit h-100" alt="{{ translate('topbar_banner') }}">
+                    class="d-md-none img-fit h-100" alt="{{ translate("topbar_banner") }}">
             </a>
             <button class="btn text-white h-100 absolute-top-right set-session" data-key="top-banner"
                 data-value="removed" data-toggle="remove-parent" data-parent=".top-banner">
@@ -32,9 +33,9 @@
                 <div class="col-lg-6 col">
                     <ul class="list-inline d-flex justify-content-between justify-content-lg-start mb-0">
                         <!-- Language switcher -->
-                        @if (get_setting('show_language_switcher') == 'on')
+                        @if (get_setting("show_language_switcher") == "on")
                             <li class="list-inline-item dropdown mr-4" id="lang-change">
-                                
+
                                 <a href="javascript:void(0)" class="dropdown-toggle text-secondary fs-12 py-2"
                                     data-toggle="dropdown" data-display="static">
                                     <span class="">{{ $system_language->name }}</span>
@@ -44,8 +45,8 @@
                                         <li>
                                             <a href="javascript:void(0)" data-flag="{{ $language->code }}"
                                                 class="dropdown-item @if ($system_language->code == $language->code) active @endif">
-                                                <img src="{{ static_asset('assets/img/placeholder.jpg') }}"
-                                                    data-src="{{ static_asset('assets/img/flags/' . $language->code . '.png') }}"
+                                                <img src="{{ asset("assets/img/placeholder.jpg") }}"
+                                                    data-src="{{ asset("assets/img/flags/" . $language->code . ".png") }}"
                                                     class="mr-1 lazyload" alt="{{ $language->name }}" height="11">
                                                 <span class="language">{{ $language->name }}</span>
                                             </a>
@@ -56,7 +57,7 @@
                         @endif
 
                         <!-- Currency Switcher -->
-                        @if (get_setting('show_currency_switcher') == 'on')
+                        @if (get_setting("show_currency_switcher") == "on")
                             <li class="list-inline-item dropdown ml-auto ml-lg-0 mr-0" id="currency-change">
                                 @php
                                     $system_currency = get_system_currency();
@@ -72,7 +73,8 @@
                                             <a class="dropdown-item @if ($system_currency->code == $currency->code) active @endif"
                                                 href="javascript:void(0)"
                                                 data-currency="{{ $currency->code }}">{{ $currency->name }}
-                                                ({{ $currency->symbol }})</a>
+                                                ({{ $currency->symbol }})
+                                            </a>
                                         </li>
                                     @endforeach
                                 </ul>
@@ -84,25 +86,25 @@
 
                 <div class="col-6 text-right d-none d-lg-block">
                     <ul class="list-inline mb-0 h-100 d-flex justify-content-end align-items-center">
-                        @if (get_setting('vendor_system_activation') == 1)
+                        @if (get_setting("vendor_system_activation") == 1)
                             <!-- Become a Seller -->
                             <li class="list-inline-item mr-0 pl-0 py-2">
-                                <a href="{{ route('shops.create') }}"
-                                    class="text-secondary fs-12 pr-3 d-inline-block border-width-2 border-right">{{ translate('Become a Seller !') }}</a>
+                                <a href="{{ route("shops.create") }}"
+                                    class="text-secondary fs-12 pr-3 d-inline-block border-width-2 border-right">{{ translate("Become a Seller !") }}</a>
                             </li>
                             <!-- Seller Login -->
                             <li class="list-inline-item mr-0 pl-0 py-2">
-                                <a href="{{ route('seller.login') }}"
-                                    class="text-secondary fs-12 pl-3 d-inline-block">{{ translate('Login to Seller') }}</a>
+                                <a href="{{ route("seller.login") }}"
+                                    class="text-secondary fs-12 pl-3 d-inline-block">{{ translate("Login to Seller") }}</a>
                             </li>
                         @endif
-                        @if (get_setting('helpline_number'))
+                        @if (get_setting("helpline_number"))
                             <!-- Helpline -->
                             <li class="list-inline-item ml-3 pl-3 mr-0 pr-0">
-                                <a href="tel:{{ get_setting('helpline_number') }}"
+                                <a href="tel:{{ get_setting("helpline_number") }}"
                                     class="text-secondary fs-12 d-inline-block py-2">
-                                    <span>{{ translate('Helpline') }}</span>
-                                    <span>{{ get_setting('helpline_number') }}</span>
+                                    <span>{{ translate("Helpline") }}</span>
+                                    <span>{{ get_setting("helpline_number") }}</span>
                                 </a>
                             </li>
                         @endif
@@ -112,7 +114,7 @@
         </div>
     </div>
 
-    <header class="@if (get_setting('header_stikcy') == 'on') sticky-top @endif z-1020 bg-white">
+    <header class="@if (get_setting("header_stikcy") == "on") sticky-top @endif z-1020 bg-white">
         <!-- Search Bar -->
         <div class="position-relative logo-bar-area border-bottom border-md-nonea z-1025">
             <div class="container">
@@ -133,15 +135,15 @@
                     </button>
                     <!-- Header Logo -->
                     <div class="col-auto pl-0 pr-3 d-flex align-items-center">
-                        <a class="d-block py-20px mr-3 ml-0" href="{{ route('home') }}">
+                        <a class="d-block py-20px mr-3 ml-0" href="{{ route("home") }}">
                             @php
-                                $header_logo = get_setting('header_logo');
+                                $header_logo = get_setting("header_logo");
                             @endphp
                             @if ($header_logo != null)
-                                <img src="{{ uploaded_asset($header_logo) }}" alt="{{ env('APP_NAME') }}"
+                                <img src="{{ uploaded_asset($header_logo) }}" alt="{{ env("APP_NAME") }}"
                                     class="mw-100 h-30px h-md-40px" height="40">
                             @else
-                                <img src="{{ static_asset('assets/img/logo.png') }}" alt="{{ env('APP_NAME') }}"
+                                <img src="{{ asset("assets/img/logo.png") }}" alt="{{ env("APP_NAME") }}"
                                     class="mw-100 h-30px h-md-40px" height="40">
                             @endif
                         </a>
@@ -156,7 +158,7 @@
                     <!-- Search field -->
                     <div class="flex-grow-1 front-header-search d-flex align-items-center bg-white mx-xl-5">
                         <div class="position-relative flex-grow-1 px-3 px-lg-0">
-                            <form action="{{ route('search') }}" method="GET" class="stop-propagation">
+                            <form action="{{ route("search") }}" method="GET" class="stop-propagation">
                                 <div class="d-flex position-relative align-items-center">
                                     <div class="d-lg-none" data-toggle="class-toggle"
                                         data-target=".front-header-search">
@@ -170,7 +172,7 @@
                                             @isset($query)
                                             value="{{ $query }}"
                                         @endisset
-                                            placeholder="{{ translate('I am shopping for...') }}" autocomplete="off">
+                                            placeholder="{{ translate("I am shopping for...") }}" autocomplete="off">
 
                                         <svg id="Group_723" data-name="Group 723" xmlns="http://www.w3.org/2000/svg"
                                             width="20.001" height="20" viewBox="0 0 20.001 20">
@@ -213,13 +215,13 @@
                     <!-- Compare -->
                     <div class="d-none d-lg-block ml-3 mr-0">
                         <div class="" id="compare">
-                            @include('frontend.'.get_setting('homepage_select').'.partials.compare')
+                            @include("frontend." . get_setting("homepage_select") . ".partials.compare")
                         </div>
                     </div>
                     <!-- Wishlist -->
                     <div class="d-none d-lg-block mr-3" style="margin-left: 36px;">
                         <div class="" id="wishlist">
-                            @include('frontend.'.get_setting('homepage_select').'.partials.wishlist')
+                            @include("frontend." . get_setting("homepage_select") . ".partials.wishlist")
                         </div>
                     </div>
                     @if (!isAdmin())
@@ -247,29 +249,29 @@
                                 @auth
                                     <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg py-0 rounded-0">
                                         <div class="p-3 bg-light border-bottom">
-                                            <h6 class="mb-0">{{ translate('Notifications') }}</h6>
+                                            <h6 class="mb-0">{{ translate("Notifications") }}</h6>
                                         </div>
                                         <div class="px-3 c-scrollbar-light overflow-auto " style="max-height:300px;">
                                             <ul class="list-group list-group-flush">
                                                 @forelse($user->unreadNotifications as $notification)
                                                     <li class="list-group-item">
-                                                        @if ($notification->type == 'App\Notifications\OrderNotification')
-                                                            @if ($user->user_type == 'customer')
-                                                                <a href="{{ route('purchase_history.details', encrypt($notification->data['order_id'])) }}"
+                                                        @if ($notification->type == "App\Notifications\OrderNotification")
+                                                            @if ($user->user_type == "customer")
+                                                                <a href="{{ route("purchase_history.details", encrypt($notification->data["order_id"])) }}"
                                                                     class="text-secondary fs-12">
                                                                     <span class="ml-2">
-                                                                        {{ translate('Order code: ') }}
-                                                                        {{ $notification->data['order_code'] }}
-                                                                        {{ translate('has been ' . ucfirst(str_replace('_', ' ', $notification->data['status']))) }}
+                                                                        {{ translate("Order code: ") }}
+                                                                        {{ $notification->data["order_code"] }}
+                                                                        {{ translate("has been " . ucfirst(str_replace("_", " ", $notification->data["status"]))) }}
                                                                     </span>
                                                                 </a>
-                                                            @elseif ($user->user_type == 'seller')
-                                                                <a href="{{ route('seller.orders.show', encrypt($notification->data['order_id'])) }}"
+                                                            @elseif ($user->user_type == "seller")
+                                                                <a href="{{ route("seller.orders.show", encrypt($notification->data["order_id"])) }}"
                                                                     class="text-secondary fs-12">
                                                                     <span class="ml-2">
-                                                                        {{ translate('Order code: ') }}
-                                                                        {{ $notification->data['order_code'] }}
-                                                                        {{ translate('has been ' . ucfirst(str_replace('_', ' ', $notification->data['status']))) }}
+                                                                        {{ translate("Order code: ") }}
+                                                                        {{ $notification->data["order_code"] }}
+                                                                        {{ translate("has been " . ucfirst(str_replace("_", " ", $notification->data["status"]))) }}
                                                                     </span>
                                                                 </a>
                                                             @endif
@@ -278,16 +280,16 @@
                                                 @empty
                                                     <li class="list-group-item">
                                                         <div class="py-4 text-center fs-16">
-                                                            {{ translate('No notification found') }}
+                                                            {{ translate("No notification found") }}
                                                         </div>
                                                     </li>
                                                 @endforelse
                                             </ul>
                                         </div>
                                         <div class="text-center border-top">
-                                            <a href="{{ route('all-notifications') }}"
+                                            <a href="{{ route("all-notifications") }}"
                                                 class="text-secondary fs-12 d-block py-2">
-                                                {{ translate('View All Notifications') }}
+                                                {{ translate("View All Notifications") }}
                                             </a>
                                         </div>
                                     </div>
@@ -305,12 +307,13 @@
                                 <span
                                     class="size-40px rounded-circle overflow-hidden border border-transparent nav-user-img">
                                     @if ($user->avatar_original != null)
-                                        <img src="{{ $user_avatar }}"
-                                            class="img-fit h-100" alt="{{ translate('avatar') }}"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                                        <img src="{{ $user_avatar }}" class="img-fit h-100"
+                                            alt="{{ translate("avatar") }}"
+                                            onerror="this.onerror=null;this.src='{{ static_asset("assets/img/avatar-place.png") }}';">
                                     @else
-                                        <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image" alt="{{ translate('avatar') }}"
-                                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                                        <img src="{{ asset("assets/img/avatar-place.png") }}" class="image"
+                                            alt="{{ translate("avatar") }}"
+                                            onerror="this.onerror=null;this.src='{{ static_asset("assets/img/avatar-place.png") }}';">
                                     @endif
                                 </span>
                                 <!-- Name -->
@@ -329,10 +332,10 @@
                                             transform="translate(-2.064 -1.995)" fill="#91919b" />
                                     </svg>
                                 </span>
-                                <a href="{{ route('user.login') }}"
-                                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate('Login') }}</a>
-                                <a href="{{ route('user.registration') }}"
-                                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration') }}</a>
+                                <a href="{{ route("user.login") }}"
+                                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate("Login") }}</a>
+                                <a href="{{ route("user.registration") }}"
+                                    class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate("Registration") }}</a>
                             </span>
                         @endauth
                     </div>
@@ -347,7 +350,7 @@
                             <ul class="list-unstyled no-scrollbar mb-0 text-left">
                                 @if (isAdmin())
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
-                                        <a href="{{ route('admin.dashboard') }}"
+                                        <a href="{{ route("admin.dashboard") }}"
                                             class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 viewBox="0 0 16 16">
@@ -356,12 +359,12 @@
                                                     fill="#b5b5c0" />
                                             </svg>
                                             <span
-                                                class="user-top-menu-name has-transition ml-3">{{ translate('Dashboard') }}</span>
+                                                class="user-top-menu-name has-transition ml-3">{{ translate("Dashboard") }}</span>
                                         </a>
                                     </li>
                                 @else
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
-                                        <a href="{{ route('dashboard') }}"
+                                        <a href="{{ route("dashboard") }}"
                                             class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 viewBox="0 0 16 16">
@@ -370,14 +373,14 @@
                                                     fill="#b5b5c0" />
                                             </svg>
                                             <span
-                                                class="user-top-menu-name has-transition ml-3">{{ translate('Dashboard') }}</span>
+                                                class="user-top-menu-name has-transition ml-3">{{ translate("Dashboard") }}</span>
                                         </a>
                                     </li>
                                 @endif
 
                                 @if (isCustomer())
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
-                                        <a href="{{ route('purchase_history.index') }}"
+                                        <a href="{{ route("purchase_history.index") }}"
                                             class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 viewBox="0 0 16 16">
@@ -410,11 +413,11 @@
                                                 </g>
                                             </svg>
                                             <span
-                                                class="user-top-menu-name has-transition ml-3">{{ translate('Purchase History') }}</span>
+                                                class="user-top-menu-name has-transition ml-3">{{ translate("Purchase History") }}</span>
                                         </a>
                                     </li>
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
-                                        <a href="{{ route('digital_purchase_history.index') }}"
+                                        <a href="{{ route("digital_purchase_history.index") }}"
                                             class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16.001" height="16"
                                                 viewBox="0 0 16.001 16">
@@ -429,12 +432,12 @@
                                                 </g>
                                             </svg>
                                             <span
-                                                class="user-top-menu-name has-transition ml-3">{{ translate('Downloads') }}</span>
+                                                class="user-top-menu-name has-transition ml-3">{{ translate("Downloads") }}</span>
                                         </a>
                                     </li>
-                                    @if (get_setting('conversation_system') == 1)
+                                    @if (get_setting("conversation_system") == 1)
                                         <li class="user-top-nav-element border border-top-0" data-id="1">
-                                            <a href="{{ route('conversations.index') }}"
+                                            <a href="{{ route("conversations.index") }}"
                                                 class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                     viewBox="0 0 16 16">
@@ -455,14 +458,14 @@
                                                     </g>
                                                 </svg>
                                                 <span
-                                                    class="user-top-menu-name has-transition ml-3">{{ translate('Conversations') }}</span>
+                                                    class="user-top-menu-name has-transition ml-3">{{ translate("Conversations") }}</span>
                                             </a>
                                         </li>
                                     @endif
 
-                                    @if (get_setting('wallet_system') == 1)
+                                    @if (get_setting("wallet_system") == 1)
                                         <li class="user-top-nav-element border border-top-0" data-id="1">
-                                            <a href="{{ route('wallet.index') }}"
+                                            <a href="{{ route("wallet.index") }}"
                                                 class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                     xmlns:xlink="http://www.w3.org/1999/xlink" width="16"
@@ -481,12 +484,12 @@
                                                     </g>
                                                 </svg>
                                                 <span
-                                                    class="user-top-menu-name has-transition ml-3">{{ translate('My Wallet') }}</span>
+                                                    class="user-top-menu-name has-transition ml-3">{{ translate("My Wallet") }}</span>
                                             </a>
                                         </li>
                                     @endif
                                     <li class="user-top-nav-element border border-top-0" data-id="1">
-                                        <a href="{{ route('support_ticket.index') }}"
+                                        <a href="{{ route("support_ticket.index") }}"
                                             class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16.001"
                                                 viewBox="0 0 16 16.001">
@@ -501,12 +504,12 @@
                                                 </g>
                                             </svg>
                                             <span
-                                                class="user-top-menu-name has-transition ml-3">{{ translate('Support Ticket') }}</span>
+                                                class="user-top-menu-name has-transition ml-3">{{ translate("Support Ticket") }}</span>
                                         </a>
                                     </li>
                                 @endif
                                 <li class="user-top-nav-element border border-top-0" data-id="1">
-                                    <a href="{{ route('logout') }}"
+                                    <a href="{{ route("logout") }}"
                                         class="text-truncate text-dark px-4 fs-14 d-flex align-items-center hov-column-gap-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="15.999"
                                             viewBox="0 0 16 15.999">
@@ -524,7 +527,7 @@
                                             </g>
                                         </svg>
                                         <span
-                                            class="user-top-menu-name text-primary has-transition ml-3">{{ translate('Logout') }}</span>
+                                            class="user-top-menu-name text-primary has-transition ml-3">{{ translate("Logout") }}</span>
                                     </a>
                                 </li>
                             </ul>
@@ -544,10 +547,10 @@
                             style="padding-top: 12px;padding-bottom: 12px; width:270px; cursor: pointer;">
                             <div class="d-flex align-items-center justify-content-between">
                                 <div>
-                                    <span class="fw-700 fs-16 text-white mr-3">{{ translate('Categories') }}</span>
-                                    <a href="{{ route('categories.all') }}" class="text-reset">
+                                    <span class="fw-700 fs-16 text-white mr-3">{{ translate("Categories") }}</span>
+                                    <a href="{{ route("categories.all") }}" class="text-reset">
                                         <span
-                                            class="d-none d-lg-inline-block text-white hov-opacity-80">({{ translate('See All') }})</span>
+                                            class="d-none d-lg-inline-block text-white hov-opacity-80">({{ translate("See All") }})</span>
                                     </a>
                                 </div>
                                 <i class="las la-angle-down text-white has-transition" id="category-menu-bar-icon"
@@ -557,17 +560,21 @@
                     </div>
                     <!-- Header Menus -->
                     @php
-                        $nav_txt_color = ((get_setting('header_nav_menu_text') == 'light') ||  (get_setting('header_nav_menu_text') == null)) ? 'text-white' : 'text-dark';
+                        $nav_txt_color =
+                            get_setting("header_nav_menu_text") == "light" ||
+                            get_setting("header_nav_menu_text") == null
+                                ? "text-white"
+                                : "text-dark";
                     @endphp
                     <div class="ml-xl-4 w-100 overflow-hidden">
                         <div class="d-flex align-items-center justify-content-center justify-content-xl-start h-100">
                             <ul class="list-inline mb-0 pl-0 hor-swipe c-scrollbar-light">
-                                @if (get_setting('header_menu_labels') != null)
-                                    @foreach (json_decode(get_setting('header_menu_labels'), true) as $key => $value)
+                                @if (get_setting("header_menu_labels") != null)
+                                    @foreach (json_decode(get_setting("header_menu_labels"), true) as $key => $value)
                                         <li class="list-inline-item mr-0 animate-underline-white">
-                                            <a href="{{ json_decode(get_setting('header_menu_links'), true)[$key] }}"
+                                            <a href="{{ json_decode(get_setting("header_menu_links"), true)[$key] }}"
                                                 class="fs-13 px-3 py-3 d-inline-block fw-700 {{ $nav_txt_color }} header_menu_links hov-bg-black-10
-                                            @if (url()->current() == json_decode(get_setting('header_menu_links'), true)[$key]) active @endif">
+                                            @if (url()->current() == json_decode(get_setting("header_menu_links"), true)[$key]) active @endif">
                                                 {{ translate($value) }}
                                             </a>
                                         </li>
@@ -580,7 +587,7 @@
                     <div class="d-none d-xl-block align-self-stretch ml-5 mr-0 has-transition bg-black-10"
                         data-hover="dropdown">
                         <div class="nav-cart-box dropdown h-100" id="cart_items" style="width: max-content;">
-                            @include('frontend.'.get_setting('homepage_select').'.partials.cart')
+                            @include("frontend." . get_setting("homepage_select") . ".partials.cart")
                         </div>
                     </div>
                 </div>
@@ -591,7 +598,7 @@
                 <div class="container">
                     <div class="d-flex position-relative">
                         <div class="position-static">
-                            @include('frontend.'.get_setting("homepage_select").'.partials.category_menu')
+                            @include("frontend." . get_setting("homepage_select") . ".partials.category_menu")
                         </div>
                     </div>
                 </div>
@@ -613,11 +620,12 @@
                     <!-- Image -->
                     <span class="size-40px rounded-circle overflow-hidden border border-transparent nav-user-img">
                         @if ($user->avatar_original != null)
-                            <img src="{{ $user_avatar }}" class="img-fit h-100" alt="{{ translate('avatar') }}"
-                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                            <img src="{{ $user_avatar }}" class="img-fit h-100" alt="{{ translate("avatar") }}"
+                                onerror="this.onerror=null;this.src='{{ static_asset("assets/img/avatar-place.png") }}';">
                         @else
-                            <img src="{{ static_asset('assets/img/avatar-place.png') }}" class="image" alt="{{ translate('avatar') }}"
-                                onerror="this.onerror=null;this.src='{{ static_asset('assets/img/avatar-place.png') }}';">
+                            <img src="{{ asset("assets/img/avatar-place.png") }}" class="image"
+                                alt="{{ translate("avatar") }}"
+                                onerror="this.onerror=null;this.src='{{ static_asset("assets/img/avatar-place.png") }}';">
                         @endif
                     </span>
                     <!-- Name -->
@@ -636,20 +644,20 @@
                                 transform="translate(-2.064 -1.995)" fill="#91919b" />
                         </svg>
                     </span>
-                    <a href="{{ route('user.login') }}"
-                        class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate('Login') }}</a>
-                    <a href="{{ route('user.registration') }}"
-                        class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate('Registration') }}</a>
+                    <a href="{{ route("user.login") }}"
+                        class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block border-right border-soft-light border-width-2 pr-2 ml-3">{{ translate("Login") }}</a>
+                    <a href="{{ route("user.registration") }}"
+                        class="text-reset opacity-60 hov-opacity-100 hov-text-primary fs-12 d-inline-block py-2 pl-2">{{ translate("Registration") }}</a>
                 </span>
             @endauth
             <hr>
             <ul class="mb-0 pl-3 pb-3 h-100">
-                @if (get_setting('header_menu_labels') != null)
-                    @foreach (json_decode(get_setting('header_menu_labels'), true) as $key => $value)
+                @if (get_setting("header_menu_labels") != null)
+                    @foreach (json_decode(get_setting("header_menu_labels"), true) as $key => $value)
                         <li class="mr-0">
-                            <a href="{{ json_decode(get_setting('header_menu_links'), true)[$key] }}"
+                            <a href="{{ json_decode(get_setting("header_menu_links"), true)[$key] }}"
                                 class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                            @if (url()->current() == json_decode(get_setting('header_menu_links'), true)[$key]) active @endif">
+                            @if (url()->current() == json_decode(get_setting("header_menu_links"), true)[$key]) active @endif">
                                 {{ translate($value) }}
                             </a>
                         </li>
@@ -659,49 +667,49 @@
                     @if (isAdmin())
                         <hr>
                         <li class="mr-0">
-                            <a href="{{ route('admin.dashboard') }}"
+                            <a href="{{ route("admin.dashboard") }}"
                                 class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links">
-                                {{ translate('My Account') }}
+                                {{ translate("My Account") }}
                             </a>
                         </li>
                     @else
                         <hr>
                         <li class="mr-0">
-                            <a href="{{ route('dashboard') }}"
+                            <a href="{{ route("dashboard") }}"
                                 class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                {{ areActiveRoutes(['dashboard'], ' active') }}">
-                                {{ translate('My Account') }}
+                                {{ areActiveRoutes(["dashboard"], " active") }}">
+                                {{ translate("My Account") }}
                             </a>
                         </li>
                     @endif
                     @if (isCustomer())
                         <li class="mr-0">
-                            <a href="{{ route('all-notifications') }}"
+                            <a href="{{ route("all-notifications") }}"
                                 class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                {{ areActiveRoutes(['all-notifications'], ' active') }}">
-                                {{ translate('Notifications') }}
+                                {{ areActiveRoutes(["all-notifications"], " active") }}">
+                                {{ translate("Notifications") }}
                             </a>
                         </li>
                         <li class="mr-0">
-                            <a href="{{ route('wishlists.index') }}"
+                            <a href="{{ route("wishlists.index") }}"
                                 class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                {{ areActiveRoutes(['wishlists.index'], ' active') }}">
-                                {{ translate('Wishlist') }}
+                                {{ areActiveRoutes(["wishlists.index"], " active") }}">
+                                {{ translate("Wishlist") }}
                             </a>
                         </li>
                         <li class="mr-0">
-                            <a href="{{ route('compare') }}"
+                            <a href="{{ route("compare") }}"
                                 class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-dark header_menu_links
-                                {{ areActiveRoutes(['compare'], ' active') }}">
-                                {{ translate('Compare') }}
+                                {{ areActiveRoutes(["compare"], " active") }}">
+                                {{ translate("Compare") }}
                             </a>
                         </li>
                     @endif
                     <hr>
                     <li class="mr-0">
-                        <a href="{{ route('logout') }}"
+                        <a href="{{ route("logout") }}"
                             class="fs-13 px-3 py-3 w-100 d-inline-block fw-700 text-primary header_menu_links">
-                            {{ translate('Logout') }}
+                            {{ translate("Logout") }}
                         </a>
                     </li>
                 @endauth
@@ -723,7 +731,7 @@
         </div>
     </div>
 
-    @section('script')
+    @section("script")
         <script type="text/javascript">
             function show_order_details(order_id) {
                 $('#order-details-modal-body').html(null);
@@ -732,7 +740,7 @@
                     $('#modal-size').addClass('modal-lg');
                 }
 
-                $.post('{{ route('orders.details') }}', {
+                $.post('{{ route("orders.details") }}', {
                     _token: AIZ.data.csrf,
                     order_id: order_id
                 }, function(data) {

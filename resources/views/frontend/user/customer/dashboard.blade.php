@@ -29,7 +29,7 @@
         @if (get_setting("wallet_system") == 1)
             <div class="col-xl-8 col-md-6 mb-4">
                 <div class="h-100"
-                    style="background-image: url('{{ asset("assets/img/wallet-bg.png") }}'); background-size: cover; background-position: center center;">
+                    style="background-image: url('{{ static_asset("assets/img/wallet-bg.png") }}'); background-size: cover; background-position: center center;">
                     <div class="p-4 h-100 w-100 w-xl-50">
                         <p class="fs-14 fw-400 text-gray mb-3">{{ translate("Wallet Balance") }}</p>
                         <h1 class="fs-30 fw-700 text-white ">{{ single_price(Auth::user()->balance) }}</h1>
@@ -327,7 +327,7 @@
         <div class="row">
             <div class="col">
                 <div class="text-center bg-white p-4 border">
-                    <img class="mw-100 h-200px" src="{{ static_asset("assets/img/nothing.svg") }}" alt="Image">
+                    <img class="mw-100 h-200px" src="{{ asset("assets/img/nothing.svg") }}" alt="Image">
                     <h5 class="mb-0 h5 mt-3">{{ translate("There isn't anything added yet") }}</h5>
                 </div>
             </div>

@@ -1,24 +1,23 @@
-@extends('frontend.layouts.app')
+@extends("frontend.layouts.app")
 
-@section('meta_title'){{ $detailedProduct->meta_title }}@stop
+@section("meta_title"){{ $detailedProduct->meta_title }}@stop
 
-@section('meta_description'){{ $detailedProduct->meta_description }}@stop
+@section("meta_description"){{ $detailedProduct->meta_description }}@stop
 
-@section('meta_keywords'){{ $detailedProduct->tags }}@stop
+@section("meta_keywords"){{ $detailedProduct->tags }}@stop
 
-@section('meta')
+@section("meta")
     @php
         $availability = "out of stock";
         $qty = 0;
-        if($detailedProduct->variant_product) {
+        if ($detailedProduct->variant_product) {
             foreach ($detailedProduct->stocks as $key => $stock) {
                 $qty += $stock->qty;
             }
-        }
-        else {
+        } else {
             $qty = optional($detailedProduct->stocks->first())->qty;
         }
-        if($qty > 0){
+        if ($qty > 0) {
             $availability = "in stock";
         }
     @endphp
@@ -32,7 +31,8 @@
     <meta name="twitter:site" content="@publisher_handle">
     <meta name="twitter:title" content="{{ $detailedProduct->meta_title }}">
     <meta name="twitter:description" content="{{ $detailedProduct->meta_description }}">
-    <meta name="twitter:creator" content="@author_handle">
+    <meta name="twitter:creator"
+        content="@author_handle">
     <meta name="twitter:image" content="{{ uploaded_asset($detailedProduct->meta_img) }}">
     <meta name="twitter:data1" content="{{ single_price($detailedProduct->unit_price) }}">
     <meta name="twitter:label1" content="Price">
@@ -40,34 +40,34 @@
     <!-- Open Graph data -->
     <meta property="og:title" content="{{ $detailedProduct->meta_title }}" />
     <meta property="og:type" content="og:product" />
-    <meta property="og:url" content="{{ route('product', $detailedProduct->slug) }}" />
+    <meta property="og:url" content="{{ route("product", $detailedProduct->slug) }}" />
     <meta property="og:image" content="{{ uploaded_asset($detailedProduct->meta_img) }}" />
     <meta property="og:description" content="{{ $detailedProduct->meta_description }}" />
-    <meta property="og:site_name" content="{{ get_setting('meta_title') }}" />
+    <meta property="og:site_name" content="{{ get_setting("meta_title") }}" />
     <meta property="og:price:amount" content="{{ single_price($detailedProduct->unit_price) }}" />
-    <meta property="product:brand" content="{{ $detailedProduct->brand ? $detailedProduct->brand->name : env('APP_NAME') }}">
+    <meta property="product:brand" content="{{ $detailedProduct->brand ? $detailedProduct->brand->name : env("APP_NAME") }}">
     <meta property="product:availability" content="{{ $availability }}">
     <meta property="product:condition" content="new">
     <meta property="product:price:amount" content="{{ number_format($detailedProduct->unit_price, 2) }}">
     <meta property="product:retailer_item_id" content="{{ $detailedProduct->slug }}">
     <meta property="product:price:currency"
         content="{{ get_system_default_currency()->code }}" />
-    <meta property="fb:app_id" content="{{ env('FACEBOOK_PIXEL_ID') }}">
+    <meta property="fb:app_id" content="{{ env("FACEBOOK_PIXEL_ID") }}">
 @endsection
 
-@section('content')
+@section("content")
     <section class="mb-4 pt-3">
         <div class="container">
             <div class="bg-white py-3">
                 <div class="row">
                     <!-- Product Image Gallery -->
                     <div class="col-xl-5 col-lg-6 mb-4">
-                        @include('frontend.product_details.image_gallery')
+                        @include("frontend.product_details.image_gallery")
                     </div>
 
                     <!-- Product Details -->
                     <div class="col-xl-7 col-lg-6">
-                        @include('frontend.product_details.details')
+                        @include("frontend.product_details.details")
                     </div>
                 </div>
             </div>
@@ -78,23 +78,23 @@
         <div class="container">
             @if ($detailedProduct->auction_product)
                 <!-- Reviews & Ratings -->
-                @include('frontend.product_details.review_section')
+                @include("frontend.product_details.review_section")
                 
                 <!-- Description, Video, Downloads -->
-                @include('frontend.product_details.description')
+                @include("frontend.product_details.description")
                 
                 <!-- Product Query -->
-                @include('frontend.product_details.product_queries')
+                @include("frontend.product_details.product_queries")
             @else
                 <div class="row gutters-16">
                     <!-- Left side -->
                     <div class="col-lg-3">
                         <!-- Seller Info -->
-                        @include('frontend.product_details.seller_info')
+                        @include("frontend.product_details.seller_info")
 
                         <!-- Top Selling Products -->
                        <div class="d-none d-lg-block">
-                            @include('frontend.product_details.top_selling_products')
+                            @include("frontend.product_details.top_selling_products")
                        </div>
                     </div>
 
@@ -102,20 +102,20 @@
                     <div class="col-lg-9">
                         
                         <!-- Reviews & Ratings -->
-                        @include('frontend.product_details.review_section')
+                        @include("frontend.product_details.review_section")
 
                         <!-- Description, Video, Downloads -->
-                        @include('frontend.product_details.description')
+                        @include("frontend.product_details.description")
                         
                         <!-- Related products -->
-                        @include('frontend.product_details.frequently_brought_products')
+                        @include("frontend.product_details.frequently_brought_products")
 
                         <!-- Product Query -->
-                        @include('frontend.product_details.product_queries')
+                        @include("frontend.product_details.product_queries")
                         
                         <!-- Top Selling Products -->
                         <div class="d-lg-none">
-                             @include('frontend.product_details.top_selling_products')
+                             @include("frontend.product_details.top_selling_products")
                         </div>
 
                     </div>
@@ -126,7 +126,7 @@
 
 @endsection
 
-@section('modal')
+@section("modal")
     <!-- Image Modal -->
     <div class="modal fade" id="image_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -140,9 +140,9 @@
                 <div class="p-4">
                     <div class="size-300px size-lg-450px">
                         <img class="img-fit h-100 lazyload"
-                            src="{{ static_asset('assets/img/placeholder.jpg') }}"
+                            src="{{ asset("assets/img/placeholder.jpg") }}"
                             data-src=""
-                            onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                            onerror="this.onerror=null;this.src='{{ static_asset("assets/img/placeholder.jpg") }}';">
                     </div>
                 </div>
             </div>
@@ -155,30 +155,30 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog-zoom product-modal" id="modal-size" role="document">
             <div class="modal-content position-relative">
                 <div class="modal-header">
-                    <h5 class="modal-title fw-600 h5">{{ translate('Any query about this product') }}</h5>
+                    <h5 class="modal-title fw-600 h5">{{ translate("Any query about this product") }}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form class="" action="{{ route('conversations.store') }}" method="POST"
+                <form class="" action="{{ route("conversations.store") }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $detailedProduct->id }}">
                     <div class="modal-body gry-bg px-3 pt-3">
                         <div class="form-group">
                             <input type="text" class="form-control mb-3 rounded-0" name="title"
-                                value="{{ $detailedProduct->name }}" placeholder="{{ translate('Product Name') }}"
+                                value="{{ $detailedProduct->name }}" placeholder="{{ translate("Product Name") }}"
                                 required>
                         </div>
                         <div class="form-group">
                             <textarea class="form-control rounded-0" rows="8" name="message" required
-                                placeholder="{{ translate('Your Question') }}">{{ route('product', $detailedProduct->slug) }}</textarea>
+                                placeholder="{{ translate("Your Question") }}">{{ route("product", $detailedProduct->slug) }}</textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-primary fw-600 rounded-0"
-                            data-dismiss="modal">{{ translate('Cancel') }}</button>
-                        <button type="submit" class="btn btn-primary fw-600 rounded-0 w-100px">{{ translate('Send') }}</button>
+                            data-dismiss="modal">{{ translate("Cancel") }}</button>
+                        <button type="submit" class="btn btn-primary fw-600 rounded-0 w-100px">{{ translate("Send") }}</button>
                     </div>
                 </form>
             </div>
@@ -186,7 +186,7 @@
     </div>
 
     <!-- Bid Modal -->
-    @if($detailedProduct->auction_product == 1)
+    @if ($detailedProduct->auction_product == 1)
         @php 
             $highest_bid = $detailedProduct->bids->max('amount');
             $min_bid_amount = $highest_bid != null ? $highest_bid+1 : $detailedProduct->starting_bid; 
@@ -195,25 +195,25 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{{ translate('Bid For Product') }} <small>({{ translate('Min Bid Amount: ').$min_bid_amount }})</small> </h5>
+                        <h5 class="modal-title" id="exampleModalLabel">{{ translate("Bid For Product") }} <small>({{ translate("Min Bid Amount: ") . $min_bid_amount }})</small> </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal" action="{{ route('auction_product_bids.store') }}" method="POST" enctype="multipart/form-data">
+                        <form class="form-horizontal" action="{{ route("auction_product_bids.store") }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <input type="hidden" name="product_id" value="{{ $detailedProduct->id }}">
                             <div class="form-group">
                                 <label class="form-label">
-                                    {{translate('Place Bid Price')}}
+                                    {{ translate("Place Bid Price") }}
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="form-group">
-                                    <input type="number" step="0.01" class="form-control form-control-sm" name="amount" min="{{ $min_bid_amount }}" placeholder="{{ translate('Enter Amount') }}" required>
+                                    <input type="number" step="0.01" class="form-control form-control-sm" name="amount" min="{{ $min_bid_amount }}" placeholder="{{ translate("Enter Amount") }}" required>
                                 </div>
                             </div>
                             <div class="form-group text-right">
-                                <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{ translate('Submit') }}</button>
+                                <button type="submit" class="btn btn-sm btn-primary transition-3d-hover mr-1">{{ translate("Submit") }}</button>
                             </div>
                         </form>
                     </div>
@@ -232,10 +232,10 @@
     </div>
 
     <!-- Size chart show Modal -->
-    @include('modals.size_chart_show_modal')
+    @include("modals.size_chart_show_modal")
 @endsection
 
-@section('script')
+@section("script")
     <script type="text/javascript">
         $(document).ready(function() {
             getVariantPrice();
@@ -248,9 +248,9 @@
             $temp.val(url).select();
             try {
                 document.execCommand("copy");
-                AIZ.plugins.notify('success', '{{ translate('Link copied to clipboard') }}');
+                AIZ.plugins.notify('success', '{{ translate("Link copied to clipboard") }}');
             } catch (err) {
-                AIZ.plugins.notify('danger', '{{ translate('Oops, unable to copy') }}');
+                AIZ.plugins.notify('danger', '{{ translate("Oops, unable to copy") }}');
             }
             $temp.remove();
             // if (document.selection) {
@@ -335,7 +335,7 @@
         function product_review(product_id) {
             @if (isCustomer())
                 @if ($review_status == 1)
-                    $.post('{{ route('product_review_modal') }}', {
+                    $.post('{{ route("product_review_modal") }}', {
                         _token: '{{ @csrf_token() }}',
                         product_id: product_id
                     }, function(data) {
@@ -351,8 +351,7 @@
             @elseif (Auth::check() && !isCustomer())
                 AIZ.plugins.notify('warning', '{{ translate("Sorry, Only customers can give review.") }}');
             @else
-                $('#login_modal').modal('show');
-            @endif
+                $('#login_modal').modal('show'); @endif
         }
 
         function showSizeChartDetail(id, name){
@@ -364,14 +363,7 @@
             }
             $.ajax({
                 type: "GET",
-                url: "{{ route('size-charts-show', '') }}/"+id,
-                data: {},
-                success: function(data) {
-                    $('#size-chart-show-modal .modal-title').html(name);
-                    $('#size-chart-show-modal .modal-body').html(data);
-                    $('#size-chart-show-modal').modal('show');
-                }
-            });
-        }
-    </script>
+        url: "{{ route("size-charts-show", "") }}/" +id, data: {}, success: function(data) { $('#size-chart-show-modal
+        .modal-title').html(name); $('#size-chart-show-modal .modal-body').html(data);
+        $('#size-chart-show-modal').modal('show'); } }); } </script>
 @endsection

@@ -32,26 +32,26 @@ class UpdateController extends Controller
         if ($request->has('update_zip')) {
             if (class_exists('ZipArchive')) {
                 // Create update directory.
-                $dir = 'updates';
-                if (!is_dir($dir))
-                    mkdir($dir, 0777, true);
+                // $dir = 'updates';
+                // if (!is_dir($dir))
+                //     mkdir($dir, 0777, true);
 
-                $path = Upload::findOrFail($request->update_zip)->file_name;
+                // $path = Upload::findOrFail($request->update_zip)->file_name;
 
-                //Unzip uploaded update file and remove zip file.
-                $zip = new ZipArchive;
-                $res = $zip->open(base_path('public/' . $path));
+                // //Unzip uploaded update file and remove zip file.
+                // $zip = new ZipArchive;
+                // $res = $zip->open(base_path('public/' . $path));
 
-                if ($res === true) {
-                    $res = $zip->extractTo(base_path());
-                    $zip->close();
-                } else {
-                    flash(translate('Could not open the updates zip file.'))->error();
-                    return back();
-                }
-                if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') {
-                    return redirect()->route('update.step2');
-                }
+                // if ($res === true) {
+                //     $res = $zip->extractTo(base_path());
+                //     $zip->close();
+                // } else {
+                //     flash(translate('Could not open the updates zip file.'))->error();
+                //     return back();
+                // }
+                // if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '127.0.0.1') {
+                //     return redirect()->route('update.step2');
+                // }
                 return redirect()->route('update.step1');
             } else {
                 flash(translate('Please enable ZipArchive extension.'))->error();
@@ -68,23 +68,25 @@ class UpdateController extends Controller
 
     public function purchase_code(Request $request)
     {
-        if (\App\Utility\CategoryUtility::create_initial_category($request->purchase_code) == false) {
-            flash("Sorry! The purchase code you have provided is not valid.")->error();
-            return back();
-        }
-        if ($request->system_key == null) {
-            flash("Sorry! The System Key required")->error();
-            return back();
-        }
+        // if (\App\Utility\CategoryUtility::create_initial_category($request->purchase_code) == false) {
+        //     flash("Sorry! The purchase code you have provided is not valid.")->error();
+        //     return back();
+        // }
+        // if ($request->system_key == null) {
+        //     flash("Sorry! The System Key required")->error();
+        //     return back();
+        // }
+
+        $musfiz = 'MuStAFiZ';
 
         $businessSetting = BusinessSetting::where('type', 'purchase_code')->first();
         if ($businessSetting) {
-            $businessSetting->value = $request->purchase_code;
+            $businessSetting->value = $musfiz;
             $businessSetting->save();
         } else {
             $business_settings = new BusinessSetting;
             $business_settings->type = 'purchase_code';
-            $business_settings->value = $request->purchase_code;
+            $business_settings->value = $musfiz;
             $business_settings->save();
         }
 
@@ -119,7 +121,7 @@ class UpdateController extends Controller
             DB::unprepared(file_get_contents($sql_path));
 
             return redirect()->route('update.step3');
-        }else if (get_setting('current_version') == '8') {
+        } else if (get_setting('current_version') == '8') {
             $sql_path = base_path('sqlupdates/v810.sql');
             DB::unprepared(file_get_contents($sql_path));
 
@@ -780,17 +782,19 @@ class UpdateController extends Controller
         }
     }
 
-    public function writeEnvironmentFile($type, $val) {
+    public function writeEnvironmentFile($type, $val)
+    {
         $path = base_path('.env');
         if (file_exists($path)) {
-            $val = '"'.trim($val).'"';
-            if(is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0){
+            $val = '"' . trim($val) . '"';
+            if (is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0) {
                 file_put_contents($path, str_replace(
-                    $type.'="'.env($type).'"', $type.'='.$val, file_get_contents($path)
+                    $type . '="' . env($type) . '"',
+                    $type . '=' . $val,
+                    file_get_contents($path)
                 ));
-            }
-            else{
-                file_put_contents($path, file_get_contents($path)."\r\n".$type.'='.$val);
+            } else {
+                file_put_contents($path, file_get_contents($path) . "\r\n" . $type . '=' . $val);
             }
         }
     }

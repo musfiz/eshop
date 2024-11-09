@@ -1,17 +1,15 @@
-@extends('backend.layouts.app')
+@extends("backend.layouts.app")
 
-@section('content')
-    @if (auth()->user()->can('smtp_settings') &&
-            env('MAIL_USERNAME') == null &&
-            env('MAIL_PASSWORD') == null)
+@section("content")
+    @if (auth()->user()->can("smtp_settings") && env("MAIL_USERNAME") == null && env("MAIL_PASSWORD") == null)
         <div class="">
             <div class="alert alert-info d-flex align-items-center">
-                {{ translate('Please Configure SMTP Setting to work all email sending functionality') }},
-                <a class="alert-link ml-2" href="{{ route('smtp_settings.index') }}">{{ translate('Configure Now') }}</a>
+                {{ translate("Please Configure SMTP Setting to work all email sending functionality") }},
+                <a class="alert-link ml-2" href="{{ route("smtp_settings.index") }}">{{ translate("Configure Now") }}</a>
             </div>
         </div>
     @endif
-    @can('admin_dashboard')
+    @can("admin_dashboard")
         <div class="row gutters-16">
 
             <!-- Customer, Products, Category, Brands -->
@@ -26,7 +24,7 @@
                                         <h1 class="fs-30 fw-600 text-dark mb-1">
                                             {{ $total_customers }}
                                         </h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Customer') }}</h3>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate("Total Customer") }}</h3>
                                     </div>
                                     <div class="mt-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -40,15 +38,15 @@
                                 <div>
                                     <h3 class="fs-13 fw-600 mb-1">
                                         <span class="badge badge-md badge-dot badge-circle badge-danger mr-2"></span>
-                                        {{ translate('Top Customers') }}
+                                        {{ translate("Top Customers") }}
                                     </h3>
                                     <div class="symbol-group">
                                         @foreach ($top_customers as $top_customer)
                                             <div class="symbol size-40px rounded-content overflow-hidden"
                                                 title="{{ $top_customer->name }}">
                                                 <img src="{{ uploaded_asset($top_customer->avatar_original) }}"
-                                                    alt="{{ translate('customer') }}" class="h-100 img-fit lazyload"
-                                                    onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                    alt="{{ translate("customer") }}" class="h-100 img-fit lazyload"
+                                                    onerror="this.onerror=null;this.src='{{ static_asset("assets/img/placeholder.jpg") }}';">
                                             </div>
                                         @endforeach
                                     </div>
@@ -63,7 +61,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <h1 class="fs-30 fw-600 text-dark mb-1">{{ $total_products }}</h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Products') }}</h3>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate("Total Products") }}</h3>
                                     </div>
                                     <div class="mt-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="27.429"
@@ -84,7 +82,7 @@
                                     <div class="d-flex justify-content-between mb-2">
                                         <h3 class="fs-13 fw-600 mb-0 text-truncate mr-2">
                                             <span class="badge badge-md badge-dot badge-circle badge-success mr-2"></span>
-                                            {{ translate('In-house Products') }}
+                                            {{ translate("In-house Products") }}
                                         </h3>
                                         <h3 class="fs-13 fw-600 mb-0">
                                             {{ $total_inhouse_products }}
@@ -94,7 +92,7 @@
                                     <div class="d-flex justify-content-between">
                                         <h3 class="fs-13 fw-600 text-truncate mr-2">
                                             <span class="badge badge-md badge-dot badge-circle badge-primary mr-2"></span>
-                                            {{ translate('Sellers Products') }}
+                                            {{ translate("Sellers Products") }}
                                         </h3>
                                         <h3 class="fs-13 fw-600 mb-0">
                                             {{ $total_sellers_products }}
@@ -111,7 +109,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <h1 class="fs-30 fw-600 text-dark mb-1">{{ $total_categories }}</h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Category') }}</h3>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate("Total Category") }}</h3>
                                     </div>
                                     <div class="mt-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -127,23 +125,26 @@
                                     @foreach ($top_categories as $key => $top_category)
                                         <div class="d-flex justify-content-between mb-1">
                                             @php
-                                                $badge = 'badge-danger';
+                                                $badge = "badge-danger";
                                                 if ($key == 1) {
-                                                    $badge = 'badge-warning';
+                                                    $badge = "badge-warning";
                                                 }
                                                 if ($key == 2) {
-                                                    $badge = 'badge-primary';
+                                                    $badge = "badge-primary";
                                                 }
                                                 $lang = App::getLocale();
-                                                $category = App\Models\CategoryTranslation::where('category_id', $top_category->id)
-                                                    ->where('lang', $lang)
+                                                $category = App\Models\CategoryTranslation::where(
+                                                    "category_id",
+                                                    $top_category->id,
+                                                )
+                                                    ->where("lang", $lang)
                                                     ->first();
                                             @endphp
                                             <h3 class="fs-13 opacity-60 mb-0 d-flex align-items-center text-truncate mr-2"
-                                                title="{{ $category ? $category->name : translate('Not Found') }}">
+                                                title="{{ $category ? $category->name : translate("Not Found") }}">
                                                 <span class="badge badge-sm badge-dot {{ $badge }} mr-2"
                                                     style="height:4px !important; width:20px !important;"></span>
-                                                {{ $category ? $category->name : translate('Not Found') }}
+                                                {{ $category ? $category->name : translate("Not Found") }}
                                             </h3>
                                             <h3 class="fs-13 fw-600 mb-0">
                                                 {{ single_price($top_category->total) }}
@@ -161,7 +162,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <h1 class="fs-30 fw-600 text-dark mb-1">{{ $total_brands }}</h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Brands') }}</h3>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate("Total Brands") }}</h3>
                                     </div>
                                     <div class="mt-2">
                                         <svg id="Layer_51" data-name="Layer 51" xmlns="http://www.w3.org/2000/svg"
@@ -176,27 +177,27 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 class="fs-13 fw-600 text-secondary mb-2">{{ translate('Top Brands') }}</h3>
+                                    <h3 class="fs-13 fw-600 text-secondary mb-2">{{ translate("Top Brands") }}</h3>
                                     @foreach ($top_brands as $key => $top_brand)
                                         <div class="d-flex justify-content-between mb-0">
                                             @php
-                                                $badge = 'badge-success';
+                                                $badge = "badge-success";
                                                 if ($key == 1) {
-                                                    $badge = 'badge-primary';
+                                                    $badge = "badge-primary";
                                                 }
                                                 if ($key == 2) {
-                                                    $badge = 'badge-info';
+                                                    $badge = "badge-info";
                                                 }
                                                 $lang = App::getLocale();
-                                                $brand = App\Models\BrandTranslation::where('brand_id', $top_brand->id)
-                                                    ->where('lang', $lang)
+                                                $brand = App\Models\BrandTranslation::where("brand_id", $top_brand->id)
+                                                    ->where("lang", $lang)
                                                     ->first();
                                             @endphp
                                             <h3 class="fs-13 fw-600 mb-0 text-truncate mr-2"
-                                                title="{{ $brand ? $brand->name : translate('Not Found') }}">
+                                                title="{{ $brand ? $brand->name : translate("Not Found") }}">
                                                 <span
                                                     class="badge badge-md badge-dot badge-circle {{ $badge }} mr-2"></span>
-                                                {{ $brand ? $brand->name : translate('Not Found') }}
+                                                {{ $brand ? $brand->name : translate("Not Found") }}
                                             </h3>
                                             <h3 class="fs-13 fw-600 mb-0">
                                                 {{ single_price($top_brand->total) }}
@@ -222,13 +223,13 @@
                                     <h1 class="fs-30 fw-600 text-primary mb-1">
                                         {{ number_format_short($total_sale) }}
                                     </h1>
-                                    <h3 class="fs-13 fw-600 text-primary mb-0">{{ translate('Total Sales') }}</h3>
+                                    <h3 class="fs-13 fw-600 text-primary mb-0">{{ translate("Total Sales") }}</h3>
                                 </div>
                                 <!-- Sales this month -->
                                 <div
                                     class="d-flex align-items-center justify-content-between p-3 rounded-2 bg-primary text-white mr-2">
                                     <h3 class="fs-13 fw-600 mb-0">
-                                        {{ translate('Sales this month') }}
+                                        {{ translate("Sales this month") }}
                                     </h3>
                                     <h3 class="fs-13 fw-600 mb-0">
                                         {{ single_price($sale_this_month) }}
@@ -236,7 +237,7 @@
                                 </div>
                                 <!-- Sales Stat -->
                                 <div>
-                                    <h3 class="fs-13 fw-600 text-primary mb-0">{{ translate('Sales Stat') }}</h3>
+                                    <h3 class="fs-13 fw-600 text-primary mb-0">{{ translate("Sales Stat") }}</h3>
                                 </div>
                                 <canvas id="graph-3" class="w-100" height="140"></canvas>
                                 <!-- Sales -->
@@ -246,7 +247,7 @@
                                         <h3 class="fs-13 fw-600 mb-0">
                                             <span
                                                 class="badge badge-md badge-dot badge-circle badge-info text-truncate mr-2"></span>
-                                            {{ translate('In-house Sales') }}
+                                            {{ translate("In-house Sales") }}
                                         </h3>
                                         <h3 class="fs-13 fw-600 mb-0">
                                             {{ single_price($admin_sale_this_month->total_sale) }}
@@ -257,7 +258,7 @@
                                         <h3 class="fs-13 fw-600 mb-0">
                                             <span
                                                 class="badge badge-md badge-dot badge-circle badge-success text-truncate mr-2"></span>
-                                            {{ translate('Sellers Sales') }}
+                                            {{ translate("Sellers Sales") }}
                                         </h3>
                                         <h3 class="fs-13 fw-600 mb-0">
                                             {{ single_price($seller_sale_this_month->total_sale) }}
@@ -271,14 +272,14 @@
                     <!-- Total Sellers -->
                     <div class="col-sm-6">
                         <div class="dashboard-box bg-white mb-2rem overflow-hidden" style="height: 470px;">
-                            @if (get_setting('vendor_system_activation') == 1)
+                            @if (get_setting("vendor_system_activation") == 1)
                                 <div class="d-flex flex-column justify-content-between h-100">
                                     <!-- Total Sellers -->
                                     <div>
                                         <h1 class="fs-30 fw-600 text-dark mb-1">
                                             {{ $total_sellers }}
                                         </h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Sellers') }}</h3>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate("Total Sellers") }}</h3>
                                     </div>
                                     <!-- Sales -->
                                     <div>
@@ -289,11 +290,11 @@
                                                     @if ($status_wise_seller->verification_status == 1)
                                                         <span
                                                             class="badge badge-md badge-dot badge-circle badge-success text-truncate mr-2"></span>
-                                                        {{ translate('Approved Sellers') }}
+                                                        {{ translate("Approved Sellers") }}
                                                     @else
                                                         <span
                                                             class="badge badge-md badge-dot badge-circle badge-danger text-truncate mr-2"></span>
-                                                        {{ translate('Pending Seller') }}
+                                                        {{ translate("Pending Seller") }}
                                                     @endif
                                                 </h3>
                                                 <h3 class="fs-13 fw-600 mb-0">
@@ -306,15 +307,15 @@
                                     <div>
                                         <h3 class="fs-13 fw-600 mb-1">
                                             <span class="badge badge-md badge-dot badge-circle badge-warning mr-2"></span>
-                                            {{ translate('Top Sellers') }}
+                                            {{ translate("Top Sellers") }}
                                         </h3>
                                         <div class="symbol-group">
                                             @foreach ($top_sellers as $top_seller)
                                                 <div class="symbol size-40px rounded-content overflow-hidden"
                                                     title="{{ $top_seller->name }}">
                                                     <img src="{{ uploaded_asset($top_seller->avatar_original) }}"
-                                                        alt="{{ translate('seller') }}" class="h-100 img-fit lazyload"
-                                                        onerror="this.onerror=null;this.src='{{ static_asset('assets/img/placeholder.jpg') }}';">
+                                                        alt="{{ translate("seller") }}" class="h-100 img-fit lazyload"
+                                                        onerror="this.onerror=null;this.src='{{ static_asset("assets/img/placeholder.jpg") }}';">
                                                 </div>
                                             @endforeach
                                         </div>
@@ -322,21 +323,21 @@
                                     </div>
                                     <!-- Sales this month -->
                                     <div class="">
-                                        <a href="{{ route('sellers.index') }}"
-                                            class="btn btn-md btn-soft-success btn-block rounded-2 mb-3">{{ translate('All Sellers') }}</a>
-                                        <a href="{{ route('sellers.index') }}?approved_status=0"
-                                            class="btn btn-md btn-soft-danger btn-block rounded-2">{{ translate('Pending Sellers') }}</a>
+                                        <a href="{{ route("sellers.index") }}"
+                                            class="btn btn-md btn-soft-success btn-block rounded-2 mb-3">{{ translate("All Sellers") }}</a>
+                                        <a href="{{ route("sellers.index") }}?approved_status=0"
+                                            class="btn btn-md btn-soft-danger btn-block rounded-2">{{ translate("Pending Sellers") }}</a>
                                     </div>
                                 </div>
                             @else
                                 <div class="d-flex flex-column align-items-center justify-content-center h-100">
                                     <div class="h-200px">
-                                        <img src="{{ static_asset('assets/img/multivendor.jpg') }}"
-                                            alt="{{ translate('multivendor') }}" class="h-100 img-fit">
+                                        <img src="{{ asset("assets/img/multivendor.jpg") }}"
+                                            alt="{{ translate("multivendor") }}" class="h-100 img-fit">
                                     </div>
-                                    <a href="{{ route('activation.index') }}"
+                                    <a href="{{ route("activation.index") }}"
                                         class="mt-4 fs-13 fw-600 text-info hov-text-primary animate-underline-primary">
-                                        {{ translate('Activate Vendor System') }}
+                                        {{ translate("Activate Vendor System") }}
                                     </a>
                                 </div>
                             @endif
@@ -357,12 +358,12 @@
                                         <h1 class="fs-30 fw-600 text-info mb-1">
                                             {{ $total_order }}
                                         </h1>
-                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate('Total Order') }}</h3>
+                                        <h3 class="fs-13 fw-600 text-secondary mb-0">{{ translate("Total Order") }}</h3>
                                     </div>
                                     <!-- All Orders button -->
 
-                                    <a href="{{ route('all_orders.index') }}"
-                                        class="btn btn-md btn-info btn-block rounded-2 mt-3">{{ translate('All Orders') }}</a>
+                                    <a href="{{ route("all_orders.index") }}"
+                                        class="btn btn-md btn-info btn-block rounded-2 mt-3">{{ translate("All Orders") }}</a>
 
                                 </div>
                             </div>
@@ -381,7 +382,7 @@
                                                 fill="#fff" />
                                         </g>
                                     </svg>
-                                    <p class="fs-13 fw-600 mb-0">{{ translate('Pending order') }}</p>
+                                    <p class="fs-13 fw-600 mb-0">{{ translate("Pending order") }}</p>
                                 </div>
                                 <h1 class="fs-24 fw-600 mb-0">
                                     {{ $total_pending_order }}
@@ -405,7 +406,7 @@
                                                 transform="translate(-1.385)" fill="#009ef7" />
                                         </g>
                                     </svg>
-                                    <p class="fs-13 fw-600 text-dark mb-0">{{ translate('Order Placed') }}</p>
+                                    <p class="fs-13 fw-600 text-dark mb-0">{{ translate("Order Placed") }}</p>
                                 </div>
                                 <h1 class="fs-24 fw-600 mb-0">
                                     {{ $total_placed_order }}
@@ -429,7 +430,7 @@
                                                 transform="translate(-310.336 -601.79)" fill="#4fcc89" />
                                         </g>
                                     </svg>
-                                    <span class="fs-13 fw-600 text-dark mb-0">{{ translate('Confirmed Order') }}</span>
+                                    <span class="fs-13 fw-600 text-dark mb-0">{{ translate("Confirmed Order") }}</span>
                                 </div>
                                 <h1 class="fs-24 fw-600 mb-0">
                                     {{ $total_confirmed_order }}
@@ -445,7 +446,7 @@
                                             d="M16,0,4,5.455V20.727l12,5.455,12-5.455V5.455Zm0,2.4,8.045,3.657L16,9.712,7.952,6.055ZM6.182,19.323V7.645l8.727,3.965V23.288Zm19.636,0-8.727,3.966V11.61l8.727-3.966Z"
                                             transform="translate(-4)" fill="#f1416c" />
                                     </svg>
-                                    <span class="fs-13 fw-600 text-dark mb-0">{{ translate('Processed Order') }}</span>
+                                    <span class="fs-13 fw-600 text-dark mb-0">{{ translate("Processed Order") }}</span>
                                 </div>
                                 <h1 class="fs-24 fw-600 mb-0">
                                     {{ $total_picked_up_order }}
@@ -461,7 +462,7 @@
                                             d="M25,13.409v5.455a1.091,1.091,0,0,1-1.091,1.091H22.818a3.273,3.273,0,1,1-6.545,0H9.727a3.273,3.273,0,1,1-6.545,0H2.091A1.091,1.091,0,0,1,1,18.864V5.773A3.273,3.273,0,0,1,4.273,2.5h9.818a3.273,3.273,0,0,1,3.273,3.273V7.955h2.182a3.273,3.273,0,0,1,2.618,1.309l2.618,3.491a.665.665,0,0,1,.076.153l.065.12A1.091,1.091,0,0,1,25,13.409ZM7.545,19.955a1.091,1.091,0,1,0-1.091,1.091A1.091,1.091,0,0,0,7.545,19.955ZM15.182,5.773a1.091,1.091,0,0,0-1.091-1.091H4.273A1.091,1.091,0,0,0,3.182,5.773v12h.851a3.273,3.273,0,0,1,4.844,0h6.305Zm2.182,6.545h4.364l-1.309-1.745a1.091,1.091,0,0,0-.873-.436H17.364Zm3.273,7.636a1.091,1.091,0,1,0-1.091,1.091A1.091,1.091,0,0,0,20.636,19.955ZM22.818,14.5H17.364v3.033a3.273,3.273,0,0,1,4.6.24h.851Z"
                                             transform="translate(-1 -2.5)" fill="#ffc700" />
                                     </svg>
-                                    <span class="fs-13 fw-600 text-dark mb-0">{{ translate('Order Shipped') }}</span>
+                                    <span class="fs-13 fw-600 text-dark mb-0">{{ translate("Order Shipped") }}</span>
                                 </div>
                                 <h1 class="fs-24 fw-600 mb-0">
                                     {{ $total_shipped_order }}
@@ -527,9 +528,9 @@
                     <div class="col-sm-6">
                         <div class="dashboard-box px-0 mb-2rem overflow-hidden" style="height: 474px;">
                             <div class="mb-2 px-2rem">
-                                <h2 class="fs-16 fw-600 text-primary mb-1 h-40px">{{ translate('In-house Top Category') }}
+                                <h2 class="fs-16 fw-600 text-primary mb-1 h-40px">{{ translate("In-house Top Category") }}
                                 </h2>
-                                <h4 class="fs-13 fw-600 text-secondary mb-0">{{ translate('By Sales') }}</h4>
+                                <h4 class="fs-13 fw-600 text-secondary mb-0">{{ translate("By Sales") }}</h4>
                             </div>
                             <!-- nav -->
                             <ul class="nav nav-tabs dashboard-tab dashboard-tab-primary border-0 px-2rem mb-3" role="tablist"
@@ -538,28 +539,28 @@
                                     <a class="nav-link active inhouse_top_categories" id="all-tab" href="#all"
                                         data-toggle="tab" data-target="all" type="button" role="tab"
                                         aria-controls="all" aria-selected="true">
-                                        {{ translate('All') }}
+                                        {{ translate("All") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link inhouse_top_categories" id="today-tab" href="#today"
                                         data-toggle="tab" data-target="DAY" type="button" role="tab"
                                         aria-controls="today" aria-selected="true">
-                                        {{ translate('Today') }}
+                                        {{ translate("Today") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link inhouse_top_categories" id="week-tab" href="#week"
                                         data-toggle="tab" data-target="WEEK" type="button" role="tab"
                                         aria-controls="week" aria-selected="true">
-                                        {{ translate('Week') }}
+                                        {{ translate("Week") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link inhouse_top_categories" id="month-tab" href="#month"
                                         data-toggle="tab" data-target="MONTH" type="button" role="tab"
                                         aria-controls="month" aria-selected="true">
-                                        {{ translate('Month') }}
+                                        {{ translate("Month") }}
                                     </a>
                                 </li>
                             </ul>
@@ -575,8 +576,8 @@
                     <div class="col-sm-6">
                         <div class="dashboard-box px-0 mb-2rem overflow-hidden" style="height: 474px;">
                             <div class="mb-2 px-2rem">
-                                <h2 class="fs-16 fw-600 text-danger mb-1 h-40px">{{ translate('In-house Top Brands') }}</h2>
-                                <h4 class="fs-13 fw-600 text-secondary mb-0">{{ translate('By Sales') }}</h4>
+                                <h2 class="fs-16 fw-600 text-danger mb-1 h-40px">{{ translate("In-house Top Brands") }}</h2>
+                                <h4 class="fs-13 fw-600 text-secondary mb-0">{{ translate("By Sales") }}</h4>
                             </div>
                             <!-- nav -->
                             <ul class="nav nav-tabs dashboard-tab dashboard-tab-danger border-0 px-2rem mb-3" role="tablist"
@@ -585,28 +586,28 @@
                                     <a class="nav-link active inhouse_top_brands" id="all-tab" href="#all"
                                         data-toggle="tab" data-target="all" type="button" role="tab"
                                         aria-controls="all" aria-selected="true">
-                                        {{ translate('All') }}
+                                        {{ translate("All") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link inhouse_top_brands" id="today-tab" href="#today" data-toggle="tab"
                                         data-target="DAY" type="button" role="tab" aria-controls="today"
                                         aria-selected="true">
-                                        {{ translate('Today') }}
+                                        {{ translate("Today") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link inhouse_top_brands" id="week-tab" href="#week" data-toggle="tab"
                                         data-target="WEEK" type="button" role="tab" aria-controls="week"
                                         aria-selected="true">
-                                        {{ translate('Week') }}
+                                        {{ translate("Week") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link inhouse_top_brands" id="month-tab" href="#month" data-toggle="tab"
                                         data-target="MONTH" type="button" role="tab" aria-controls="month"
                                         aria-selected="true">
-                                        {{ translate('Month') }}
+                                        {{ translate("Month") }}
                                     </a>
                                 </li>
                             </ul>
@@ -628,17 +629,17 @@
                         <div class="col-sm-6 d-flex flex-column justify-content-between">
                             <!-- Total In-house Sales -->
                             <div>
-                                <h2 class="fs-16 fw-600 text-dark mb-2rem">{{ translate('In-house Store') }}</h2>
+                                <h2 class="fs-16 fw-600 text-dark mb-2rem">{{ translate("In-house Store") }}</h2>
                                 <h1 class="fs-30 fw-600 text-dark mb-1">
                                     {{ single_price($total_inhouse_sale) }}
                                 </h1>
-                                <h4 class="fs-13 fw-600 text-dark text-secondary mb-0">{{ translate('Total Sales') }}</h4>
+                                <h4 class="fs-13 fw-600 text-dark text-secondary mb-0">{{ translate("Total Sales") }}</h4>
                             </div>
                             <!-- Order graph -->
                             <canvas id="graph-2" class="w-100 h-auto" height="200"></canvas>
                             <!-- All In-house Orders -->
-                            <a href="{{ route('inhouse_orders.index') }}"
-                                class="btn btn-md btn-soft-info btn-block rounded-2 mt-4 mb-4 mt-sm-0 mb-sm-0">{{ translate('All In-house Orders') }}</a>
+                            <a href="{{ route("inhouse_orders.index") }}"
+                                class="btn btn-md btn-soft-info btn-block rounded-2 mt-4 mb-4 mt-sm-0 mb-sm-0">{{ translate("All In-house Orders") }}</a>
                         </div>
 
                         <div class="col-sm-6">
@@ -648,7 +649,7 @@
                                 <h1 class="fs-30 fw-600 text-dark mb-0">
                                     {{ $total_inhouse_products }}
                                 </h1>
-                                <p class="fs-13 fw-600 text-primary mb-0">{{ translate('In-house product') }}</p>
+                                <p class="fs-13 fw-600 text-primary mb-0">{{ translate("In-house product") }}</p>
                             </div>
                             <!-- Ratings -->
                             <div
@@ -656,7 +657,7 @@
                                 <h1 class="fs-30 fw-600 text-dark mb-0">
                                     {{ number_format($inhouse_product_rating, 2) }}
                                 </h1>
-                                <p class="fs-13 fw-600 text-warning mb-0">{{ translate('Ratings') }}</p>
+                                <p class="fs-13 fw-600 text-warning mb-0">{{ translate("Ratings") }}</p>
                             </div>
                             <!-- Total Orders -->
                             <div
@@ -664,22 +665,22 @@
                                 <h1 class="fs-30 fw-600 text-dark mb-0">
                                     {{ $total_inhouse_order }}
                                 </h1>
-                                <p class="fs-13 fw-600 text-info mb-0">{{ translate('Total Orders') }}</p>
+                                <p class="fs-13 fw-600 text-info mb-0">{{ translate("Total Orders") }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            @if (get_setting('vendor_system_activation') == 1)
+            @if (get_setting("vendor_system_activation") == 1)
                 <!-- Top Seller & Products -->
                 <div class="col-lg-6">
                     <div class="dashboard-box bg-white mb-2rem overflow-hidden p-2rem" style="height: 474px;">
                         <!-- Header -->
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <div>
-                                <h2 class="fs-16 fw-600 text-soft-dark mb-2">{{ translate('Top Seller & Products') }}</h2>
-                                <h4 class="fs-13 fw-600 text-secondary mb-0">{{ translate('By Sales') }}</h4>
+                                <h2 class="fs-16 fw-600 text-soft-dark mb-2">{{ translate("Top Seller & Products") }}</h2>
+                                <h4 class="fs-13 fw-600 text-secondary mb-0">{{ translate("By Sales") }}</h4>
                             </div>
                             <!-- nav -->
                             <ul class="nav nav-tabs dashboard-tab dashboard-tab-warning border-0" role="tablist"
@@ -688,28 +689,28 @@
                                     <a class="nav-link top_sellers_products_tab active" id="all-tab" href="#all"
                                         data-toggle="tab" data-target="all" type="button" role="tab"
                                         aria-controls="all" aria-selected="true">
-                                        {{ translate('All') }}
+                                        {{ translate("All") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link top_sellers_products_tab" id="today-tab" href="#today"
                                         data-toggle="tab" data-target="DAY" type="button" role="tab"
                                         aria-controls="today" aria-selected="true">
-                                        {{ translate('Today') }}
+                                        {{ translate("Today") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link top_sellers_products_tab" id="week-tab" href="#week"
                                         data-toggle="tab" data-target="WEEK" type="button" role="tab"
                                         aria-controls="week" aria-selected="true">
-                                        {{ translate('Week') }}
+                                        {{ translate("Week") }}
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link top_sellers_products_tab" id="month-tab" href="#month"
                                         data-toggle="tab" data-target="MONTH" type="button" role="tab"
                                         aria-controls="month" aria-selected="true">
-                                        {{ translate('Month') }}
+                                        {{ translate("Month") }}
                                     </a>
                                 </li>
                             </ul>
@@ -722,7 +723,7 @@
             @endif
 
             <!-- Top Brands & Products -->
-            {{-- <div class="@if (get_setting('vendor_system_activation') == 1) col-lg-6 @else col-lg-12 @endif">
+            {{-- <div class="@if (get_setting("vendor_system_activation") == 1) col-lg-6 @else col-lg-12 @endif">
                 <div class="dashboard-box bg-white mb-2rem overflow-hidden p-2rem" style="height: 474px;">
                     <!-- Header -->
                     <div class="d-flex align-items-center justify-content-between mb-3">
@@ -772,7 +773,7 @@
         </div>
     @endcan
 @endsection
-@section('script')
+@section("script")
     <script type="text/javascript">
         AIZ.plugins.chart('#graph-3', {
             type: 'line',
@@ -785,7 +786,7 @@
                 datasets: [{
                         fill: false,
                         borderColor: '#009ef7',
-                        label: "{{ translate('Yearly Sales') }}",
+                        label: "{{ translate("Yearly Sales") }}",
                         data: [
                             @foreach ($sales_stat as $row)
                                 {{ $row[0]->total }},
@@ -836,7 +837,7 @@
             data: {
                 labels: [
                     @foreach ($payment_type_wise_inhouse_sale as $row)
-                        "{{ ucwords(str_replace('_', ' ', $row->payment_type)) }}",
+                        "{{ ucwords(str_replace("_", " ", $row->payment_type)) }}",
                     @endforeach
                 ],
                 datasets: [{

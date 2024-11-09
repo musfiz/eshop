@@ -87,6 +87,8 @@ class AddonController extends Controller
 
                 //dd($random_dir, $json);
 
+                $purchaseCode = 'MuStAfIz';
+
                 if (BusinessSetting::where('type', 'current_version')->first()->value >= $json['minimum_item_version']) {
                     if (count(Addon::where('unique_identifier', $json['unique_identifier'])->get()) == 0) {
                         $addon = new Addon;
@@ -95,7 +97,7 @@ class AddonController extends Controller
                         $addon->version = $json['version'];
                         $addon->activated = 1;
                         $addon->image = $json['addon_banner'];
-                        $addon->purchase_code = $request->purchase_code;
+                        $addon->purchase_code = $purchaseCode;
                         $addon->save();
 
                         // Create new directories.
@@ -168,7 +170,7 @@ class AddonController extends Controller
                         $addon->version = $json['version'];
                         $addon->name = $json['name'];
                         $addon->image = $json['addon_banner'];
-                        $addon->purchase_code = $request->purchase_code;
+                        $addon->purchase_code = $purchaseCode;
                         $addon->save();
 
                         flash(translate('This addon is updated successfully'))->success();
@@ -219,9 +221,7 @@ class AddonController extends Controller
      * @param \App\Models\Addon $addon
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-    }
+    public function update(Request $request, $id) {}
 
     /**
      * Remove the specified resource from storage.
