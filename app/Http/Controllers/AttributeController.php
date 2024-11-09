@@ -7,12 +7,12 @@ use App\Models\Attribute;
 use App\Models\Color;
 use App\Models\AttributeTranslation;
 use App\Models\AttributeValue;
-use CoreComponentRepository;
 use Str;
 
 class AttributeController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         // Staff Permission Check
         $this->middleware(['permission:view_product_attributes'])->only('index');
         $this->middleware(['permission:edit_product_attribute'])->only('edit');
@@ -34,8 +34,6 @@ class AttributeController extends Controller
      */
     public function index()
     {
-        CoreComponentRepository::instantiateShopRepository();
-        CoreComponentRepository::initializeCache();
         $attributes = Attribute::with('attribute_values')->orderBy('created_at', 'desc')->paginate(15);
         return view('backend.product.attribute.index', compact('attributes'));
     }
@@ -45,9 +43,7 @@ class AttributeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -95,7 +91,7 @@ class AttributeController extends Controller
     {
         $lang      = $request->lang;
         $attribute = Attribute::findOrFail($id);
-        return view('backend.product.attribute.edit', compact('attribute','lang'));
+        return view('backend.product.attribute.edit', compact('attribute', 'lang'));
     }
 
     /**
@@ -108,8 +104,8 @@ class AttributeController extends Controller
     public function update(Request $request, $id)
     {
         $attribute = Attribute::findOrFail($id);
-        if($request->lang == env("DEFAULT_LANGUAGE")){
-          $attribute->name = $request->name;
+        if ($request->lang == env("DEFAULT_LANGUAGE")) {
+            $attribute->name = $request->name;
         }
         $attribute->save();
 
@@ -138,7 +134,6 @@ class AttributeController extends Controller
         Attribute::destroy($id);
         flash(translate('Attribute has been deleted successfully'))->success();
         return redirect()->route('attributes.index');
-
     }
 
     public function store_attribute_value(Request $request)
@@ -161,10 +156,10 @@ class AttributeController extends Controller
     public function update_attribute_value(Request $request, $id)
     {
         $attribute_value = AttributeValue::findOrFail($id);
-        
+
         $attribute_value->attribute_id = $request->attribute_id;
         $attribute_value->value = ucfirst($request->value);
-        
+
         $attribute_value->save();
 
         flash(translate('Attribute value has been updated successfully'))->success();
@@ -175,26 +170,27 @@ class AttributeController extends Controller
     {
         $attribute_values = AttributeValue::findOrFail($id);
         AttributeValue::destroy($id);
-        
+
         flash(translate('Attribute value has been deleted successfully'))->success();
         return redirect()->route('attributes.show', $attribute_values->attribute_id);
-
     }
-    
-    public function colors(Request $request) {
+
+    public function colors(Request $request)
+    {
         $sort_search = null;
         $colors = Color::orderBy('created_at', 'desc');
 
-        if ($request->search != null){
-            $colors = $colors->where('name', 'like', '%'.$request->search.'%');
+        if ($request->search != null) {
+            $colors = $colors->where('name', 'like', '%' . $request->search . '%');
             $sort_search = $request->search;
         }
         $colors = $colors->paginate(10);
 
         return view('backend.product.color.index', compact('colors', 'sort_search'));
     }
-    
-    public function store_color(Request $request) {
+
+    public function store_color(Request $request)
+    {
         $request->validate([
             'name' => 'required',
             'code' => 'required|unique:colors|max:255',
@@ -202,13 +198,13 @@ class AttributeController extends Controller
         $color = new Color;
         $color->name = Str::replace(' ', '', $request->name);
         $color->code = $request->code;
-        
+
         $color->save();
 
         flash(translate('Color has been inserted successfully'))->success();
         return redirect()->route('colors');
     }
-    
+
     public function edit_color(Request $request, $id)
     {
         $color = Color::findOrFail($id);
@@ -227,25 +223,23 @@ class AttributeController extends Controller
         $color = Color::findOrFail($id);
 
         $request->validate([
-            'code' => 'required|unique:colors,code,'.$color->id,
+            'code' => 'required|unique:colors,code,' . $color->id,
         ]);
-        
+
         $color->name = Str::replace(' ', '', $request->name);
         $color->code = $request->code;
-        
+
         $color->save();
 
         flash(translate('Color has been updated successfully'))->success();
         return back();
     }
-    
+
     public function destroy_color($id)
     {
         Color::destroy($id);
-        
+
         flash(translate('Color has been deleted successfully'))->success();
         return redirect()->route('colors');
-
     }
-    
 }

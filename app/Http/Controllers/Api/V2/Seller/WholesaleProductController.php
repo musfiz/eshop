@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V2\Seller;
 
 use Illuminate\Http\Request;
-use CoreComponentRepository;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductTranslation;
@@ -17,9 +16,7 @@ use Auth;
 
 class WholesaleProductController extends Controller
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
 
     // Wholesale Products list in Seller panel 
@@ -47,7 +44,13 @@ class WholesaleProductController extends Controller
         $request->added_by = "seller";
 
         $product = (new WholesaleService)->store($request->except([
-            '_token', 'tax_id', 'tax', 'tax_type', 'flash_deal_id', 'flash_discount', 'flash_discount_type'
+            '_token',
+            'tax_id',
+            'tax',
+            'tax_type',
+            'flash_deal_id',
+            'flash_discount',
+            'flash_discount_type'
         ]));
         $request->merge(['product_id' => $product->id]);
 
@@ -57,14 +60,21 @@ class WholesaleProductController extends Controller
         //VAT & Tax
         if ($request->tax_id) {
             (new productTaxService)->store($request->only([
-                'tax_id', 'tax', 'tax_type', 'product_id'
+                'tax_id',
+                'tax',
+                'tax_type',
+                'product_id'
             ]));
         }
 
         // Product Translations
         $request->merge(['lang' => env('DEFAULT_LANGUAGE')]);
         ProductTranslation::create($request->only([
-            'lang', 'name', 'unit', 'description', 'product_id'
+            'lang',
+            'name',
+            'unit',
+            'description',
+            'product_id'
         ]));
 
         return $this->success("Product successfully created.");

@@ -8,46 +8,51 @@ use DB;
 use Hash;
 use App\Models\BusinessSetting;
 use App\Models\User;
-use MehediIitdu\CoreComponentRepository\CoreComponentRepository;
 use Artisan;
 use Session;
 
 class InstallController extends Controller
 {
-    public function step0() {
+    public function step0()
+    {
         $this->writeEnvironmentFile('APP_URL', URL::to('/'));
         return view('installation.step0');
     }
 
-    public function step1() {
+    public function step1()
+    {
         $permission['curl_enabled']           = function_exists('curl_version');
         $permission['db_file_write_perm']     = is_writable(base_path('.env'));
         $permission['routes_file_write_perm'] = is_writable(base_path('app/Providers/RouteServiceProvider.php'));
         return view('installation.step1', compact('permission'));
     }
 
-    public function step2() {
+    public function step2()
+    {
         return view('installation.step2');
     }
 
-    public function step3($error = "") {
-        CoreComponentRepository::instantiateShopRepository();
-        if($error == ""){
+    public function step3($error = "")
+    {
+        if ($error == "") {
             return view('installation.step3');
-        }else {
+        } else {
             return view('installation.step3', compact('error'));
         }
     }
 
-    public function step4() {
+    public function step4()
+    {
         return view('installation.step4');
     }
 
-    public function step5() {
+    public function step5()
+    {
         return view('installation.step5');
     }
 
-    public function purchase_code(Request $request) {
+    public function purchase_code(Request $request)
+    {
         if (\App\Utility\CategoryUtility::create_initial_category($request->purchase_code) == false) {
             flash("Sorry! The purchase code you have provided is not valid.")->error();
             return back();
@@ -61,7 +66,8 @@ class InstallController extends Controller
         return redirect('step3');
     }
 
-    public function system_settings(Request $request) {
+    public function system_settings(Request $request)
+    {
         $businessSetting = BusinessSetting::where('type', 'system_default_currency')->first();
         $businessSetting->value = $request->system_default_currency;
         $businessSetting->save();
@@ -98,49 +104,54 @@ class InstallController extends Controller
         }
         return view('installation.step6');
     }
-    public function database_installation(Request $request) {
+    public function database_installation(Request $request)
+    {
 
-        if(self::check_database_connection($request->DB_HOST, $request->DB_DATABASE, $request->DB_USERNAME, $request->DB_PASSWORD)) {
+        if (self::check_database_connection($request->DB_HOST, $request->DB_DATABASE, $request->DB_USERNAME, $request->DB_PASSWORD)) {
             $path = base_path('.env');
             if (file_exists($path)) {
                 foreach ($request->types as $type) {
                     $this->writeEnvironmentFile($type, $request[$type]);
                 }
                 return redirect('step4');
-            }else {
+            } else {
                 return redirect('step3');
             }
-        }else {
+        } else {
             return redirect('step3/database_error');
         }
     }
 
-    public function import_sql() {
+    public function import_sql()
+    {
         $sql_path = base_path('shop.sql');
         DB::unprepared(file_get_contents($sql_path));
         return redirect('step5');
     }
 
-    function check_database_connection($db_host = "", $db_name = "", $db_user = "", $db_pass = "") {
+    function check_database_connection($db_host = "", $db_name = "", $db_user = "", $db_pass = "")
+    {
 
-        if(@mysqli_connect($db_host, $db_user, $db_pass, $db_name)) {
+        if (@mysqli_connect($db_host, $db_user, $db_pass, $db_name)) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
-    public function writeEnvironmentFile($type, $val) {
+    public function writeEnvironmentFile($type, $val)
+    {
         $path = base_path('.env');
         if (file_exists($path)) {
-            $val = '"'.trim($val).'"';
-            if(is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0){
+            $val = '"' . trim($val) . '"';
+            if (is_numeric(strpos(file_get_contents($path), $type)) && strpos(file_get_contents($path), $type) >= 0) {
                 file_put_contents($path, str_replace(
-                    $type.'="'.env($type).'"', $type.'='.$val, file_get_contents($path)
+                    $type . '="' . env($type) . '"',
+                    $type . '=' . $val,
+                    file_get_contents($path)
                 ));
-            }
-            else{
-                file_put_contents($path, file_get_contents($path)."\r\n".$type.'='.$val);
+            } else {
+                file_put_contents($path, file_get_contents($path) . "\r\n" . $type . '=' . $val);
             }
         }
     }
