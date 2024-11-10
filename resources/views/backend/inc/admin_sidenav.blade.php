@@ -174,7 +174,8 @@
                                                 </a>
                                             </li>
                                             <li class="aiz-side-nav-item">
-                                                <a href="{{ route("products.seller", "digital") }}" class="aiz-side-nav-link">
+                                                <a href="{{ route("products.seller", "digital") }}"
+                                                    class="aiz-side-nav-link">
                                                     <span class="aiz-side-nav-text">{{ translate("Digital Products") }}</span>
                                                 </a>
                                             </li>

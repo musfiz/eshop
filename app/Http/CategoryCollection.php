@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\V2;
+namespace App\Http;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use App\Utility\CategoryUtility;
@@ -10,7 +10,7 @@ class CategoryCollection extends ResourceCollection
     public function toArray($request)
     {
         return [
-            'data' => $this->collection->map(function($data) {
+            'data' => $this->collection->map(function ($data) {
                 return [
                     'id' => $data->id,
                     'name' => $data->getTranslation('name'),
